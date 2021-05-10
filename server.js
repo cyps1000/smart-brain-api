@@ -24,19 +24,49 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+/**
+ * GET Root Route
+ */
 app.get("/", (req, res) => {
   res.send(db.users);
 });
+
+/**
+ * POST Sing in Route
+ */
 app.post("/signin", signin.handleSignin(db, bcrypt));
+
+/**
+ * POST Register Route
+ */
 app.post("/register", (req, res) => {
   register.handleRegister(req, res, db, bcrypt);
 });
+
+/**
+ * GET Profile[ID] Route
+ */
 app.get("/profile/:id", (req, res) => {
   profile.handleProfileGet(req, res, db);
 });
+
+/**
+ * POST Profile[params] Route
+ */
+app.post("/profile/:id", (req, res) => {
+  profile.handleProfileUpdate(req, res, db);
+});
+
+/**
+ * PUT Image Route
+ */
 app.put("/image", (req, res) => {
   image.handleImage(req, res, db);
 });
+
+/**
+ * POST Imageurl Route
+ */
 app.post("/imageurl", (req, res) => {
   image.handleApiCall(req, res);
 });

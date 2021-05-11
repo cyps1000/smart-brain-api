@@ -55,16 +55,14 @@ const setToken = (key, value) => {
   return Promise.resolve(redisClient.set(key, value));
 };
 
-const createSession = async (user) => {
-  try {
-    const { email, id } = user;
-    const token = signToken(email);
-
-    await setToken(token, id);
-    return { success: true, userId: id, token };
-  } catch (error) {
-    console.log(error);
-  }
+const createSession = (user) => {
+  const { email, id } = user;
+  const token = signToken(email);
+  return setToken(token, id)
+    .then(() => {
+      return { success: "true", userId: id, token, user };
+    })
+    .catch(console.log);
 };
 
 const signInAuthentication = (db, bcrypt) => (req, res) => {
